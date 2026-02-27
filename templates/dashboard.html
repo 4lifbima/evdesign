@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVDesign Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Enforce stroke width for icons */
+        iconify-icon {
+            stroke-width: 1.5px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E9ECEF;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6C757D;
+        }
+
+        /* Custom UI Elements */
+        .custom-checkbox {
+            appearance: none;
+            background-color: #FFFFFF;
+            width: 1.125rem;
+            height: 1.125rem;
+            border: 1px solid #E9ECEF;
+            border-radius: 0.25rem;
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .custom-checkbox::before {
+            content: "";
+            width: 0.65rem;
+            height: 0.65rem;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em white;
+            transform-origin: center;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        .custom-checkbox:checked {
+            background-color: #fc1919;
+            border-color: #fc1919;
+        }
+        .custom-checkbox:checked::before {
+            transform: scale(1);
+        }
+
+        /* Custom Toggle */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #fc1919;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #fc1919;
+        }
+        .toggle-checkbox:checked + .toggle-label:after {
+            transform: translateX(100%);
+            border-color: white;
+        }
+        .toggle-label {
+            width: 2.5rem;
+            height: 1.25rem;
+            background-color: #E9ECEF;
+            border-radius: 9999px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .toggle-label:after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 1rem;
+            height: 1rem;
+            background-color: #FFFFFF;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Clean Table Styles */
+        tr:hover td {
+            background-color: rgba(252, 25, 25, 0.02);
+        }
+
+        /* Chart Animation */
+        @keyframes drawLine {
+            from { stroke-dashoffset: 1000; }
+            to { stroke-dashoffset: 0; }
+        }
+        .chart-path {
+            stroke-dasharray: 1000;
+            animation: drawLine 2s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-[#F8F9FA] text-[#495057] antialiased h-screen flex overflow-hidden font-light text-sm">
+
+    <!-- Sidebar -->
+    <aside class="w-[280px] bg-[#FFFFFF] border-r border-[#E9ECEF] flex-col flex-shrink-0 hidden lg:flex z-20 transition-all duration-300">
+        <!-- Logo Area -->
+        <div class="h-[80px] flex items-center px-6 border-b border-[#E9ECEF]">
+            <div class="flex items-center gap-3 text-[#212529]">
+                <iconify-icon icon="solar:tshirt-linear" class="text-2xl text-[#fc1919]"></iconify-icon>
+                <span class="text-xl tracking-tighter font-semibold">EVDESIGN</span>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex-1 overflow-y-auto py-6 px-4 space-y-1">
+            <p class="px-4 text-xs font-normal uppercase tracking-wider text-[#6C757D] mb-3 mt-2">Menu Utama</p>
+            
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-[#fc1919]/5 text-[#fc1919] font-normal transition-colors">
+                <iconify-icon icon="solar:home-2-linear" class="text-lg"></iconify-icon>
+                <span>Dashboard Utama</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-[#6C757D] hover:text-[#212529] hover:bg-[#F8F9FA] transition-colors">
+                <iconify-icon icon="solar:bag-linear" class="text-lg"></iconify-icon>
+                <span>Manajemen Produk</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-[#6C757D] hover:text-[#212529] hover:bg-[#F8F9FA] transition-colors">
+                <iconify-icon icon="solar:sort-linear" class="text-lg"></iconify-icon>
+                <span>Manajemen Kategori</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-[#6C757D] hover:text-[#212529] hover:bg-[#F8F9FA] transition-colors">
+                <iconify-icon icon="solar:users-group-rounded-linear" class="text-lg"></iconify-icon>
+                <span>Binaan & Perajin</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-[#6C757D] hover:text-[#212529] hover:bg-[#F8F9FA] transition-colors justify-between">
+                <div class="flex items-center gap-3">
+                    <iconify-icon icon="solar:cart-large-linear" class="text-lg"></iconify-icon>
+                    <span>Pesanan</span>
+                </div>
+                <span class="bg-[#fc1919] text-[#FFFFFF] text-[10px] font-medium px-2 py-0.5 rounded-full">5</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-[#6C757D] hover:text-[#212529] hover:bg-[#F8F9FA] transition-colors">
+                <iconify-icon icon="solar:box-linear" class="text-lg"></iconify-icon>
+                <span>Inventaris Bahan</span>
+            </a>
+
+            <p class="px-4 text-xs font-normal uppercase tracking-wider text-[#6C757D] mb-3 mt-6">Konten & Media</p>
+            
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-[#6C757D] hover:text-[#212529] hover:bg-[#F8F9FA] transition-colors">
+                <iconify-icon icon="solar:gallery-linear" class="text-lg"></iconify-icon>
+                <span>Galeri Karya</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-[#6C757D] hover:text-[#212529] hover:bg-[#F8F9FA] transition-colors">
+                <iconify-icon icon="solar:notes-linear" class="text-lg"></iconify-icon>
+                <span>Artikel & Berita</span>
+            </a>
+        </div>
+
+        <!-- Footer Profile -->
+        <div class="p-4 border-t border-[#E9ECEF]">
+            <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-[#6C757D] hover:text-[#212529] hover:bg-[#F8F9FA] transition-colors mb-2">
+                <iconify-icon icon="solar:settings-linear" class="text-lg"></iconify-icon>
+                <span>Pengaturan</span>
+            </a>
+            <div class="flex items-center gap-3 px-4 py-2">
+                <div class="w-9 h-9 rounded-full bg-[#E9ECEF] flex items-center justify-center overflow-hidden border border-[#E9ECEF]">
+                    <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Admin" alt="Admin" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-[#212529] truncate tracking-tight">Sarah Nabila</p>
+                    <p class="text-xs text-[#6C757D] truncate">Administrator</p>
+                </div>
+                <button class="text-[#6C757D] hover:text-[#fc1919] transition-colors">
+                    <iconify-icon icon="solar:logout-linear" class="text-xl"></iconify-icon>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden bg-[#F8F9FA]">
+        
+        <!-- Top Header -->
+        <header class="h-[80px] bg-[#FFFFFF] border-b border-[#E9ECEF] flex items-center justify-between px-6 lg:px-8 flex-shrink-0 z-10">
+            <div class="flex items-center gap-4">
+                <button class="lg:hidden text-[#495057] hover:text-[#212529]">
+                    <iconify-icon icon="solar:hamburger-menu-linear" class="text-2xl"></iconify-icon>
+                </button>
+                <div>
+                    <h1 class="text-2xl font-medium tracking-tight text-[#212529]">Dashboard Utama</h1>
+                    <div class="flex items-center gap-2 text-xs text-[#6C757D] mt-0.5">
+                        <span>Admin</span>
+                        <iconify-icon icon="solar:alt-arrow-right-linear" class="text-[10px]"></iconify-icon>
+                        <span class="text-[#212529] font-normal">Overview</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="hidden md:flex items-center relative">
+                    <iconify-icon icon="solar:magnifer-linear" class="absolute left-3.5 text-[#6C757D] text-lg"></iconify-icon>
+                    <input type="text" placeholder="Cari pesanan, produk..." class="w-64 pl-10 pr-4 py-2.5 bg-[#F8F9FA] border border-[#E9ECEF] rounded-xl text-sm focus:outline-none focus:border-[#fc1919] focus:ring-1 focus:ring-[#fc1919]/20 transition-all placeholder-[#6C757D] text-[#212529]">
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-4 border-l border-[#E9ECEF] pl-6">
+                    <button class="text-[#6C757D] hover:text-[#212529] transition-colors">
+                        <iconify-icon icon="solar:moon-linear" class="text-xl"></iconify-icon>
+                    </button>
+                    <button class="relative text-[#6C757D] hover:text-[#212529] transition-colors">
+                        <iconify-icon icon="solar:bell-linear" class="text-xl"></iconify-icon>
+                        <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-[#fc1919] rounded-full border-2 border-[#FFFFFF]"></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Scrollable Content -->
+        <main class="flex-1 overflow-y-auto p-6 lg:p-8">
+            <div class="max-w-[1400px] mx-auto space-y-6">
+                
+                <!-- Stat Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-5">
+                    <!-- Card 1 -->
+                    <div class="bg-[#FFFFFF] rounded-2xl p-5 border-l-4 border-[#fc1919] shadow-[0_2px_8px_rgba(0,0,0,0.02),0_4px_12px_rgba(0,0,0,0.04)] flex flex-col justify-between h-[130px]">
+                        <div class="flex justify-between items-start">
+                            <p class="text-xs font-normal uppercase tracking-wider text-[#6C757D]">Total Produk</p>
+                            <div class="w-8 h-8 rounded-lg bg-[#fc1919]/10 flex items-center justify-center text-[#fc1919]">
+                                <iconify-icon icon="solar:tshirt-linear" class="text-lg"></iconify-icon>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-semibold text-[#fc1919] font-mono tracking-tight">124</h3>
+                            <div class="flex items-center gap-1 text-xs mt-1">
+                                <iconify-icon icon="solar:arrow-right-up-linear" class="text-[#28A745]"></iconify-icon>
+                                <span class="text-[#28A745] font-normal">+12</span>
+                                <span class="text-[#6C757D]">dari bulan lalu</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-[#FFFFFF] rounded-2xl p-5 border-l-4 border-[#fc1919] shadow-[0_2px_8px_rgba(0,0,0,0.02),0_4px_12px_rgba(0,0,0,0.04)] flex flex-col justify-between h-[130px]">
+                        <div class="flex justify-between items-start">
+                            <p class="text-xs font-normal uppercase tracking-wider text-[#6C757D]">Total Binaan</p>
+                            <div class="w-8 h-8 rounded-lg bg-[#fc1919]/10 flex items-center justify-center text-[#fc1919]">
+                                <iconify-icon icon="solar:users-group-rounded-linear" class="text-lg"></iconify-icon>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-semibold text-[#fc1919] font-mono tracking-tight">40</h3>
+                            <div class="flex items-center gap-1 text-xs mt-1">
+                                <span class="text-[#28A745] font-normal px-2 py-0.5 bg-[#28A745]/10 rounded-full">Semua Aktif</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-[#FFFFFF] rounded-2xl p-5 border-l-4 border-[#fc1919] shadow-[0_2px_8px_rgba(0,0,0,0.02),0_4px_12px_rgba(0,0,0,0.04)] flex flex-col justify-between h-[130px]">
+                        <div class="flex justify-between items-start">
+                            <p class="text-xs font-normal uppercase tracking-wider text-[#6C757D]">Pesanan Bulan Ini</p>
+                            <div class="w-8 h-8 rounded-lg bg-[#fc1919]/10 flex items-center justify-center text-[#fc1919]">
+                                <iconify-icon icon="solar:cart-large-linear" class="text-lg"></iconify-icon>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-semibold text-[#fc1919] font-mono tracking-tight">56</h3>
+                            <div class="flex items-center gap-1 text-xs mt-1">
+                                <iconify-icon icon="solar:arrow-right-up-linear" class="text-[#28A745]"></iconify-icon>
+                                <span class="text-[#28A745] font-normal">+23%</span>
+                                <span class="text-[#6C757D]">vs bulan lalu</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="bg-[#FFFFFF] rounded-2xl p-5 border-l-4 border-[#fc1919] shadow-[0_2px_8px_rgba(0,0,0,0.02),0_4px_12px_rgba(0,0,0,0.04)] flex flex-col justify-between h-[130px]">
+                        <div class="flex justify-between items-start">
+                            <p class="text-xs font-normal uppercase tracking-wider text-[#6C757D]">Pendapatan</p>
+                            <div class="w-8 h-8 rounded-lg bg-[#fc1919]/10 flex items-center justify-center text-[#fc1919]">
+                                <iconify-icon icon="solar:wallet-linear" class="text-lg"></iconify-icon>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-[#fc1919] font-mono tracking-tight">Rp 45,8<span class="text-sm font-normal ml-1">Juta</span></h3>
+                            <div class="flex items-center gap-1 text-xs mt-1">
+                                <iconify-icon icon="solar:arrow-right-up-linear" class="text-[#28A745]"></iconify-icon>
+                                <span class="text-[#28A745] font-normal">+18%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="bg-[#FFFFFF] rounded-2xl p-5 border-l-4 border-[#FFC107] shadow-[0_2px_8px_rgba(0,0,0,0.02),0_4px_12px_rgba(0,0,0,0.04)] flex flex-col justify-between h-[130px]">
+                        <div class="flex justify-between items-start">
+                            <p class="text-xs font-normal uppercase tracking-wider text-[#6C757D]">Stok Menipis</p>
+                            <div class="w-8 h-8 rounded-lg bg-[#FFC107]/10 flex items-center justify-center text-[#FFC107]">
+                                <iconify-icon icon="solar:box-minimalistic-linear" class="text-lg"></iconify-icon>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-semibold text-[#FFC107] font-mono tracking-tight">8</h3>
+                            <div class="flex items-center gap-1 text-xs mt-1">
+                                <span class="text-[#FFC107] font-normal px-2 py-0.5 bg-[#FFC107]/10 rounded-full">Perlu Restock</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="bg-[#FFFFFF] rounded-2xl p-5 border-l-4 border-[#17A2B8] shadow-[0_2px_8px_rgba(0,0,0,0.02),0_4px_12px_rgba(0,0,0,0.04)] flex flex-col justify-between h-[130px]">
+                        <div class="flex justify-between items-start">
+                            <p class="text-xs font-normal uppercase tracking-wider text-[#6C757D]">Pengunjung</p>
+                            <div class="w-8 h-8 rounded-lg bg-[#17A2B8]/10 flex items-center justify-center text-[#17A2B8]">
+                                <iconify-icon icon="solar:globus-linear" class="text-lg"></iconify-icon>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-semibold text-[#17A2B8] font-mono tracking-tight">1.24k</h3>
+                            <div class="flex items-center gap-1 text-xs mt-1">
+                                <iconify-icon icon="solar:arrow-right-up-linear" class="text-[#28A745]"></iconify-icon>
+                                <span class="text-[#28A745] font-normal">+5%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                    
+                    <!-- Line Chart (Sales) -->
+                    <div class="bg-[#FFFFFF] rounded-2xl p-6 border border-[#E9ECEF] shadow-[0_2px_8px_rgba(0,0,0,0.02),0_4px_12px_rgba(0,0,0,0.04)] lg:col-span-2">
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <h3 class="text-lg font-medium tracking-tight text-[#212529]">Grafik Penjualan</h3>
+                                <p class="text-xs text-[#6C757D] mt-1">12 Bulan Terakhir</p>
+                            </div>
+                            <select class="bg-[#F8F9FA] border border-[#E9ECEF] rounded-lg px-3 py-1.5 text-xs text-[#495057] focus:outline-none focus:border-[#fc1919] appearance-none cursor-pointer">
+                                <option>Tahun 2023</option>
+                                <option>Tahun 2022</option>
+                            </select>
+                        </div>
+                        
+                        <div class="h-[250px] w-full relative flex items-end">
+                            <!-- Y-Axis Labels -->
+                            <div class="absolute left-0 top-0 h-full flex flex-col justify-between text-[10px] text-[#6C757D] pb-6">
+                                <span>50M</span><span>40M</span><span>30M</span><span>20M</span><span>10M</span><span>0</span>
+                            </div>
+                            
+                            <!-- Chart Area -->
+                            <div class="ml-8 flex-1 h-full relative border-b border-[#E9ECEF]">
+                                <!-- Grid Lines -->
+                                <div class="absolute inset-0 flex flex-col justify-between">
+                                    <div class="w-full border-t border-[#E9ECEF] border-dashed"></div>
+                                    <div class="w-full border-t border-[#E9ECEF] border-dashed"></div>
+                                    <div class="w-full border-t border-[#E9ECEF] border-dashed"></div>
+                                    <div class="w-full border-t border-[#E9ECEF] border-dashed"></div>
+                                    <div class="w-full border-t border-[#E9ECEF] border-dashed"></div>
+                                </div>
+                                
+                                <!-- SVG Line Chart -->
+                                <svg viewBox="0 0 1000 200" preserveAspectRatio="none" class="absolute inset-0 w-full h-full pb-1 z-10 overflow-visible">
+                                    <path d="M0,180 C100,160 150,120 250,140 C350,160 450,40 550,80 C650,120 750,20 850,50 C950,80 1000,10 1000,10" fill="none" stroke="#fc1919" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="chart-path" />
+                                    <!-- Data Points -->
+                                    <circle cx="250" cy="140" r="4" fill="#FFFFFF" stroke="#fc1919" stroke-width="2" />
+                                    <circle cx="550" cy="80" r="4" fill="#FFFFFF" stroke="#fc1919" stroke-width="2" />
+                                    <circle cx="850" cy="50" r="4" fill="#FFFFFF" stroke="#fc1919" stroke-width="2" />
+                                </svg>
+                            </div>
+                            
+                            <!-- X-Axis Labels -->
+                            <div class="absolute bottom-0 left-8 right-0 flex justify-between text-[10px] text-[#6C757D]">
+                                <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>Mei</span><span>Jun</span><span>Jul</span><span>Ags</span><span>Sep</span><span>Okt</span><span>Nov</span><span>Des</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bar Chart (Top Categories) -->
+                    <div class="bg-[#FFFFFF] rounded-2xl p-6 border border-[#E9ECEF] shadow-[0_2px_8px_rgba(0,0,0,0.02),0_4px_12px_rgba(0,0,0,0.04)]">
+                        <h3 class="text-lg font-medium tracking-tight text-[#212529] mb-1">Produk Terlaris</h3>
+                        <p class="text-xs text-[#6C757D] mb-6">Berdasarkan kategori</p>
+                        
+                        <div class="space-y-5">
+                            <div>
+                                <div class="flex justify-between text-sm mb-2 text-[#495057]">
+                                    <span class="font-normal">Kemeja Pria Karawo</span>
+                                    <span class="font-mono text-[#212529] font-medium">45%</span>
+                                </div>
+                                <div class="w-full bg-[#F8F9FA] rounded-full h-2.5 overflow-hidden">
+                                    <div class="bg-[#fc1919] h-full rounded-full" style="width: 45%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between text-sm mb-2 text-[#495057]">
+                                    <span class="font-normal">Gamis Sulam</span>
+                                    <span class="font-mono text-[#212529] font-medium">30%</span>
+                                </div>
+                                <div class="w-full bg-[#F8F9FA] rounded-full h-2.5 overflow-hidden">
+                                    <div class="bg-[#fc1919] h-full rounded-full opacity-80" style="width: 30%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between text-sm mb-2 text-[#495057]">
+                                    <span class="font-normal">Kain Tenun Gorontalo</span>
+                                    <span class="font-mono text-[#212529] font-medium">15%</span>
+                                </div>
+                                <div class="w-full bg-[#F8F9FA] rounded-full h-2.5 overflow-hidden">
+                                    <div class="bg-[#fc1919] h-full rounded-full opacity-60" style="width: 15%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-sm mb-2 text-[#495057]">
+                                    <span class="font-normal">Aksesoris Wastra</span>
+                                    <span class="font-mono text-[#212529] font-medium">10%</span>
+                                </div>
+                                <div class="w-full bg-[#F8F9FA] rounded-full h-2.5 overflow-hidden">
+                                    <div class="bg-[#fc1919] h-full rounded-full opacity-40" style="width: 10%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full mt-6 py-2 border border-[#E9ECEF] rounded-xl text-sm text-[#495057] hover:text-[#fc1919] hover:border-[#fc1919] transition-colors font-normal">
+                            Lihat Laporan Lengkap
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bottom Section: Tables & Lists -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                    
+                    <!-- Recent Activity -->
+                    <div class="bg-[#FFFFFF] rounded-2xl p-6 border border-[#E9ECEF] shadow-[0_2px_8px_rgba(0,0,0,0.02),0_4px_12px_rgba(0,0,0,0.04)]">
+                        <h3 class="text-lg font-medium tracking-tight text-[#212529] mb-6">Aktivitas Terkini</h3>
+                        
+                        <div class="space-y-0">
+                            <div class="relative pl-6 pb-6 border-l border-[#E9ECEF]">
+                                <div class="absolute -left-1.5 top-1.5 w-3 h-3 bg-[#FFFFFF] border-2 border-[#fc1919] rounded-full"></div>
+                                <p class="text-sm text-[#212529] font-normal mb-0.5">Produk Kemeja Karawo ditambahkan</p>
+                                <p class="text-xs text-[#6C757D]">5 menit lalu oleh Admin</p>
+                            </div>
+                            
+                            <div class="relative pl-6 pb-6 border-l border-[#E9ECEF]">
+                                <div class="absolute -left-1.5 top-1.5 w-3 h-3 bg-[#FFFFFF] border-2 border-[#17A2B8] rounded-full"></div>
+                                <p class="text-sm text-[#212529] font-normal mb-0.5">Pesanan <span class="text-[#fc1919] font-mono">#INV-001</span> dikonfirmasi</p>
+                                <p class="text-xs text-[#6C757D]">15 menit lalu</p>
+                            </div>
+                            
+                            <div class="relative pl-6 pb-6 border-l border-[#E9ECEF]">
+                                <div class="absolute -left-1.5 top-1.5 w-3 h-3 bg-[#FFFFFF] border-2 border-[#FFC107] rounded-full"></div>
+                                <p class="text-sm text-[#212529] font-normal mb-0.5">Stok bahan Benang Sulam menipis</p>
+                                <p class="text-xs text-[#6C757D]">1 jam lalu • Sistem</p>
+                            </div>
+                            
+                            <div class="relative pl-6 border-l border-transparent">
+                                <div class="absolute -left-1.5 top-1.5 w-3 h-3 bg-[#FFFFFF] border-2 border-[#28A745] rounded-full"></div>
+                                <p class="text-sm text-[#212529] font-normal mb-0.5">Perajin baru: Ibu Siti dari Suwawa</p>
+                                <p class="text-xs text-[#6C757D]">3 jam lalu</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Products Table -->
+                    <div class="bg-[#FFFFFF] rounded-2xl p-6 border border-[#E9ECEF] shadow-[0_2px_8px_rgba(0,0,0,0.02),0_4px_12px_rgba(0,0,0,0.04)] lg:col-span-2 overflow-x-auto">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-medium tracking-tight text-[#212529]">Pesanan Terbaru</h3>
+                            <button class="text-[#fc1919] text-sm hover:underline font-normal">Lihat Semua</button>
+                        </div>
+                        
+                        <table class="w-full text-left border-collapse min-w-[500px]">
+                            <thead>
+                                <tr>
+                                    <th class="text-[11px] uppercase tracking-wider text-[#6C757D] font-normal py-3 border-b border-[#E9ECEF] w-10">
+                                        <input type="checkbox" class="custom-checkbox">
+                                    </th>
+                                    <th class="text-[11px] uppercase tracking-wider text-[#6C757D] font-normal py-3 border-b border-[#E9ECEF]">Invoice</th>
+                                    <th class="text-[11px] uppercase tracking-wider text-[#6C757D] font-normal py-3 border-b border-[#E9ECEF]">Pelanggan</th>
+                                    <th class="text-[11px] uppercase tracking-wider text-[#6C757D] font-normal py-3 border-b border-[#E9ECEF]">Total</th>
+                                    <th class="text-[11px] uppercase tracking-wider text-[#6C757D] font-normal py-3 border-b border-[#E9ECEF]">Status</th>
+                                    <th class="text-[11px] uppercase tracking-wider text-[#6C757D] font-normal py-3 border-b border-[#E9ECEF] text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="transition-colors border-b border-[#E9ECEF] last:border-0">
+                                    <td class="py-3"><input type="checkbox" class="custom-checkbox"></td>
+                                    <td class="py-3 font-mono text-sm text-[#212529] font-medium">#INV-001</td>
+                                    <td class="py-3 text-sm text-[#495057]">Budi Santoso</td>
+                                    <td class="py-3 text-sm text-[#212529] font-medium font-mono">Rp 1.250.000</td>
+                                    <td class="py-3">
+                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-normal bg-[#FFC107]/10 text-[#FFC107]">Diproses</span>
+                                    </td>
+                                    <td class="py-3 text-right">
+                                        <button class="text-[#6C757D] hover:text-[#fc1919] p-1"><iconify-icon icon="solar:pen-linear" class="text-lg"></iconify-icon></button>
+                                    </td>
+                                </tr>
+                                <tr class="transition-colors border-b border-[#E9ECEF] last:border-0">
+                                    <td class="py-3"><input type="checkbox" class="custom-checkbox"></td>
+                                    <td class="py-3 font-mono text-sm text-[#212529] font-medium">#INV-002</td>
+                                    <td class="py-3 text-sm text-[#495057]">Siti Aminah</td>
+                                    <td class="py-3 text-sm text-[#212529] font-medium font-mono">Rp 850.000</td>
+                                    <td class="py-3">
+                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-normal bg-[#28A745]/10 text-[#28A745]">Selesai</span>
+                                    </td>
+                                    <td class="py-3 text-right">
+                                        <button class="text-[#6C757D] hover:text-[#fc1919] p-1"><iconify-icon icon="solar:pen-linear" class="text-lg"></iconify-icon></button>
+                                    </td>
+                                </tr>
+                                <tr class="transition-colors border-b border-[#E9ECEF] last:border-0">
+                                    <td class="py-3"><input type="checkbox" class="custom-checkbox"></td>
+                                    <td class="py-3 font-mono text-sm text-[#212529] font-medium">#INV-003</td>
+                                    <td class="py-3 text-sm text-[#495057]">Andi Wijaya</td>
+                                    <td class="py-3 text-sm text-[#212529] font-medium font-mono">Rp 2.100.000</td>
+                                    <td class="py-3">
+                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-normal bg-[#17A2B8]/10 text-[#17A2B8]">Baru</span>
+                                    </td>
+                                    <td class="py-3 text-right">
+                                        <button class="text-[#6C757D] hover:text-[#fc1919] p-1"><iconify-icon icon="solar:pen-linear" class="text-lg"></iconify-icon></button>
+                                    </td>
+                                </tr>
+                                <tr class="transition-colors border-b border-[#E9ECEF] last:border-0">
+                                    <td class="py-3"><input type="checkbox" class="custom-checkbox"></td>
+                                    <td class="py-3 font-mono text-sm text-[#212529] font-medium">#INV-004</td>
+                                    <td class="py-3 text-sm text-[#495057]">Dina Lestari</td>
+                                    <td class="py-3 text-sm text-[#212529] font-medium font-mono">Rp 450.000</td>
+                                    <td class="py-3">
+                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-normal bg-[#DC3545]/10 text-[#DC3545]">Dibatalkan</span>
+                                    </td>
+                                    <td class="py-3 text-right">
+                                        <button class="text-[#6C757D] hover:text-[#fc1919] p-1"><iconify-icon icon="solar:pen-linear" class="text-lg"></iconify-icon></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                
+                <!-- Spacer for bottom padding -->
+                <div class="h-6"></div>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div><label class="block mb-1">Nama</label><input type="text" name="name" value="{{ old('name', $artisan->name ?? '') }}" class="w-full rounded-xl border-slate-300 dark:bg-slate-800" required></div>
+<div><label class="block mb-1">Slug</label><input type="text" name="slug" value="{{ old('slug', $artisan->slug ?? '') }}" class="w-full rounded-xl border-slate-300 dark:bg-slate-800"></div>
+<div><label class="block mb-1">Email</label><input type="email" name="email" value="{{ old('email', $artisan->email ?? '') }}" class="w-full rounded-xl border-slate-300 dark:bg-slate-800"></div>
+<div><label class="block mb-1">Phone</label><input type="text" name="phone" value="{{ old('phone', $artisan->phone ?? '') }}" class="w-full rounded-xl border-slate-300 dark:bg-slate-800"></div>
+<div><label class="block mb-1">Status</label><select name="status" class="w-full rounded-xl border-slate-300 dark:bg-slate-800"><option value="active" @selected(old('status', $artisan->status ?? 'active')==='active')>Active</option><option value="inactive" @selected(old('status', $artisan->status ?? '')==='inactive')>Inactive</option><option value="on_leave" @selected(old('status', $artisan->status ?? '')==='on_leave')>On Leave</option></select></div>
+<div><label class="block mb-1">Tanggal Gabung</label><input type="date" name="joined_date" value="{{ old('joined_date', isset($artisan->joined_date) ? $artisan->joined_date->format('Y-m-d') : '') }}" class="w-full rounded-xl border-slate-300 dark:bg-slate-800"></div>
+<div><label class="block mb-1">Kota</label><input type="text" name="city" value="{{ old('city', $artisan->city ?? '') }}" class="w-full rounded-xl border-slate-300 dark:bg-slate-800"></div>
+<div><label class="block mb-1">Provinsi</label><input type="text" name="province" value="{{ old('province', $artisan->province ?? 'Gorontalo') }}" class="w-full rounded-xl border-slate-300 dark:bg-slate-800"></div>
+<div class="md:col-span-2"><label class="block mb-1">Skills (pisah koma)</label><input type="text" name="skills" value="{{ old('skills', isset($artisan) ? implode(', ', $artisan->skills ?? []) : '') }}" class="w-full rounded-xl border-slate-300 dark:bg-slate-800"></div>
+<div class="md:col-span-2"><label class="block mb-1">Bio</label><textarea name="bio" class="w-full rounded-xl border-slate-300 dark:bg-slate-800">{{ old('bio', $artisan->bio ?? '') }}</textarea></div>
+</div>
