@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Toastify CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -16,10 +18,10 @@
     </style>
 </head>
 <body class="bg-slate-100 text-slate-700 dark:bg-slate-950 dark:text-slate-200 antialiased text-sm">
-<div class="min-h-screen flex" @keydown.escape.window="sidebarOpen = false">
+<div class="h-screen overflow-hidden flex" @keydown.escape.window="sidebarOpen = false">
     <div x-show="sidebarOpen" class="fixed inset-0 bg-black/40 z-30 lg:hidden" @click="sidebarOpen = false" x-cloak></div>
 
-    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed lg:static z-40 inset-y-0 left-0 w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transform lg:translate-x-0 transition-transform duration-200 flex flex-col">
+    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed lg:relative z-40 inset-y-0 left-0 w-72 h-full bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transform lg:translate-x-0 transition-transform duration-200 flex flex-col flex-shrink-0">
         <div class="h-20 flex items-center px-6 border-b border-slate-200 dark:border-slate-800">
             <div class="flex items-center gap-3 text-slate-900 dark:text-slate-100">
                 <iconify-icon icon="solar:tshirt-linear" class="text-2xl text-red-600"></iconify-icon>
@@ -30,15 +32,15 @@
         <nav class="flex-1 overflow-y-auto p-4 space-y-1">
             @php
                 $menus = [
-                    ['route' => 'dashboard', 'icon' => 'solar:home-2-linear', 'label' => 'Dashboard'],
-                    ['route' => 'products.index', 'icon' => 'solar:bag-linear', 'label' => 'Manajemen Produk'],
-                    ['route' => 'categories.index', 'icon' => 'solar:sort-linear', 'label' => 'Manajemen Kategori'],
-                    ['route' => 'artisans.index', 'icon' => 'solar:users-group-rounded-linear', 'label' => 'Binaan & Perajin'],
-                    ['route' => 'materials.index', 'icon' => 'solar:box-linear', 'label' => 'Inventaris Bahan'],
-                    ['route' => 'tags.index', 'icon' => 'solar:tag-linear', 'label' => 'Manajemen Tag'],
-                    ['route' => 'galleries.index', 'icon' => 'solar:gallery-linear', 'label' => 'Galeri Karya'],
-                    ['route' => 'articles.index', 'icon' => 'solar:notes-linear', 'label' => 'Artikel & Berita'],
-                    ['route' => 'settings.index', 'icon' => 'solar:settings-linear', 'label' => 'Pengaturan'],
+                    ['route' => 'dashboard', 'icon' => 'solar:home-2-bold-duotone', 'label' => 'Dashboard'],
+                    ['route' => 'products.index', 'icon' => 'solar:bag-bold-duotone', 'label' => 'Manajemen Produk'],
+                    ['route' => 'categories.index', 'icon' => 'solar:sort-bold-duotone', 'label' => 'Manajemen Kategori'],
+                    ['route' => 'artisans.index', 'icon' => 'solar:users-group-rounded-bold-duotone', 'label' => 'Binaan & Perajin'],
+                    ['route' => 'materials.index', 'icon' => 'solar:box-bold-duotone', 'label' => 'Inventaris Bahan'],
+                    ['route' => 'tags.index', 'icon' => 'solar:tag-bold-duotone', 'label' => 'Manajemen Tag'],
+                    ['route' => 'galleries.index', 'icon' => 'solar:gallery-bold-duotone', 'label' => 'Galeri Karya'],
+                    ['route' => 'articles.index', 'icon' => 'solar:notes-bold-duotone', 'label' => 'Artikel & Berita'],
+                    ['route' => 'settings.index', 'icon' => 'solar:settings-bold-duotone', 'label' => 'Pengaturan'],
                 ];
             @endphp
 
@@ -60,15 +62,15 @@
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button class="text-slate-500 hover:text-red-600" type="submit">
-                        <iconify-icon icon="solar:logout-linear" class="text-xl"></iconify-icon>
+                        <iconify-icon icon="solar:logout-2-bold-duotone" class="text-xl"></iconify-icon>
                     </button>
                 </form>
             </div>
         </div>
     </aside>
 
-    <div class="flex-1 min-w-0 flex flex-col">
-        <header class="h-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 lg:px-8">
+    <div class="flex-1 min-w-0 flex flex-col h-full overflow-hidden">
+        <header class="h-20 flex-shrink-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 lg:px-8">
             <div class="flex items-center gap-3">
                 <button class="lg:hidden text-slate-600 dark:text-slate-300" @click="sidebarOpen = true">
                     <iconify-icon icon="solar:hamburger-menu-linear" class="text-2xl"></iconify-icon>
@@ -85,22 +87,6 @@
         </header>
 
         <main class="flex-1 overflow-y-auto p-4 lg:p-8">
-            @if (session('success'))
-                <div class="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-700 px-4 py-3">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if ($errors->any())
-                <div class="mb-4 rounded-xl border border-red-200 bg-red-50 text-red-700 px-4 py-3">
-                    <ul class="list-disc list-inside">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             @yield('content')
         </main>
     </div>
@@ -121,6 +107,56 @@
             }
         }
     }
+</script>
+</script>
+<!-- Toastify JS -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if(session('success'))
+            Toastify({
+                text: "{{ session('success') }}",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                style: {
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    borderRadius: "10px",
+                }
+            }).showToast();
+        @endif
+
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                Toastify({
+                    text: "{{ $error }}",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    style: {
+                        background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                        borderRadius: "10px",
+                    }
+                }).showToast();
+            @endforeach
+        @endif
+        
+        @if(session('info'))
+            Toastify({
+                text: "{{ session('info') }}",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                style: {
+                    background: "linear-gradient(to right, #2193b0, #6dd5ed)",
+                    borderRadius: "10px",
+                }
+            }).showToast();
+        @endif
+    });
 </script>
 </body>
 </html>
