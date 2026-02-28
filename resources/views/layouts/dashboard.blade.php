@@ -4,159 +4,244 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'EVDesign Dashboard')</title>
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <title>@yield('title', 'EVDesign') | EVDesign Admin</title>
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- Toastify CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Toastify -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        *, body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #E9ECEF; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+        ::-webkit-scrollbar-thumb:hover { background: #fc1919; }
+
+        /* Nav active state */
+        .nav-item-active {
+            background-color: rgba(252, 25, 25, 0.10);
+            color: #fc1919 !important;
+            border-right: 3px solid #fc1919;
+            font-weight: 600;
+        }
+        .dark .nav-item-active { background-color: rgba(252, 25, 25, 0.15); }
+
+        /* Badge helpers */
+        .badge-success { background-color: rgba(40,167,69,.10); color: #28A745; }
+        .badge-danger  { background-color: rgba(220,53,69,.10);  color: #DC3545; }
+        .badge-warning { background-color: rgba(255,193,7,.15);  color: #D39E00; }
+        .dark .badge-warning { color: #FFC107; }
+        .badge-info    { background-color: rgba(23,162,184,.10); color: #17A2B8; }
+
+        /* Form inputs dark */
+        .dark input, .dark select, .dark textarea {
+            background-color: #1E1E1E;
+            color: #f1f5f9;
+            border-color: #334155;
+        }
+        input[type="checkbox"], input[type="radio"] { accent-color: #fc1919; }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-700 dark:bg-slate-950 dark:text-slate-200 antialiased text-sm">
-<div class="h-screen overflow-hidden flex" @keydown.escape.window="sidebarOpen = false">
-    <div x-show="sidebarOpen" class="fixed inset-0 bg-black/40 z-30 lg:hidden" @click="sidebarOpen = false" x-cloak></div>
+<body class="bg-[#f0f7fc] dark:bg-[#121212] text-[#212529] dark:text-gray-100 antialiased overflow-hidden flex h-screen text-sm">
 
-    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed lg:relative z-40 inset-y-0 left-0 w-72 h-full bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transform lg:translate-x-0 transition-transform duration-200 flex flex-col flex-shrink-0">
-        <div class="h-20 flex items-center px-6 border-b border-slate-200 dark:border-slate-800">
-            <div class="flex items-center gap-3 text-slate-900 dark:text-slate-100">
-                <iconify-icon icon="solar:tshirt-linear" class="text-2xl text-red-600"></iconify-icon>
-                <span class="text-xl tracking-tight font-semibold">EVDESIGN</span>
+    <!-- Sidebar Overlay (mobile) -->
+    <div x-show="sidebarOpen" @click="sidebarOpen = false"
+         class="fixed inset-0 bg-black/50 z-30 md:hidden" x-cloak></div>
+
+    <!-- Sidebar -->
+    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+           class="fixed md:relative z-40 inset-y-0 left-0 w-72 h-full bg-white dark:bg-[#1E1E1E] border-r border-[#E9ECEF] dark:border-[#334155] transform md:translate-x-0 transition-transform duration-300 flex flex-col flex-shrink-0">
+
+        <!-- Logo -->
+        <div class="h-20 flex items-center px-6 border-b border-[#E9ECEF] dark:border-[#334155] justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-[#fc1919] rounded-lg flex items-center justify-center text-white flex-shrink-0">
+                    <iconify-icon icon="solar:shop-bold" class="text-xl"></iconify-icon>
+                </div>
+                <span class="text-xl font-bold tracking-tight text-[#212529] dark:text-white">EVDesign<span class="text-[#fc1919]">.</span></span>
             </div>
+            <button @click="sidebarOpen = false" class="md:hidden text-[#6C757D] hover:text-[#fc1919]">
+                <iconify-icon icon="solar:close-circle-bold" class="text-2xl"></iconify-icon>
+            </button>
         </div>
 
-        <nav class="flex-1 overflow-y-auto p-4 space-y-1">
-            @php
-                $menus = [
-                    ['route' => 'dashboard', 'icon' => 'solar:home-2-bold-duotone', 'label' => 'Dashboard'],
-                    ['route' => 'products.index', 'icon' => 'solar:bag-bold-duotone', 'label' => 'Manajemen Produk'],
-                    ['route' => 'categories.index', 'icon' => 'solar:sort-bold-duotone', 'label' => 'Manajemen Kategori'],
-                    ['route' => 'artisans.index', 'icon' => 'solar:users-group-rounded-bold-duotone', 'label' => 'Binaan & Perajin'],
-                    ['route' => 'materials.index', 'icon' => 'solar:box-bold-duotone', 'label' => 'Inventaris Bahan'],
-                    ['route' => 'tags.index', 'icon' => 'solar:tag-bold-duotone', 'label' => 'Manajemen Tag'],
-                    ['route' => 'galleries.index', 'icon' => 'solar:gallery-bold-duotone', 'label' => 'Galeri Karya'],
-                    ['route' => 'articles.index', 'icon' => 'solar:notes-bold-duotone', 'label' => 'Artikel & Berita'],
-                    ['route' => 'settings.index', 'icon' => 'solar:settings-bold-duotone', 'label' => 'Pengaturan'],
-                ];
-            @endphp
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6 px-4">
+            <p class="text-[11px] uppercase tracking-widest text-[#6C757D] font-semibold mb-3 px-3">Menu Utama</p>
+            <div class="space-y-0.5">
+                @php
+                    $menus = [
+                        ['route' => 'dashboard',       'icon' => 'solar:home-2-bold',                    'label' => 'Dashboard'],
+                        ['route' => 'products.index',  'icon' => 'solar:bag-bold',                       'label' => 'Manajemen Produk'],
+                        ['route' => 'categories.index','icon' => 'solar:sort-bold',                      'label' => 'Kategori'],
+                        ['route' => 'artisans.index',  'icon' => 'solar:users-group-rounded-bold',       'label' => 'Data Perajin'],
+                    ];
+                    $menus2 = [
+                        ['route' => 'materials.index', 'icon' => 'solar:box-bold',                       'label' => 'Inventaris Bahan'],
+                        ['route' => 'galleries.index', 'icon' => 'solar:gallery-bold',                   'label' => 'Galeri Karya'],
+                        ['route' => 'articles.index',  'icon' => 'solar:notes-bold',                     'label' => 'Artikel & Berita'],
+                        ['route' => 'tags.index',      'icon' => 'solar:tag-bold',                       'label' => 'Manajemen Tag'],
+                    ];
+                @endphp
 
-            @foreach ($menus as $menu)
-                @php $isActive = request()->routeIs($menu['route']) || request()->routeIs(str_replace('.index', '.*', $menu['route'])); @endphp
-                <a href="{{ route($menu['route']) }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition {{ $isActive ? 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
-                    <iconify-icon icon="{{ $menu['icon'] }}" class="text-lg"></iconify-icon>
-                    <span>{{ $menu['label'] }}</span>
-                </a>
-            @endforeach
+                @foreach ($menus as $menu)
+                    @php $isActive = request()->routeIs($menu['route']) || request()->routeIs(str_replace('.index', '.*', $menu['route'])); @endphp
+                    <a href="{{ route($menu['route']) }}"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#495057] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors {{ $isActive ? 'nav-item-active' : '' }}">
+                        <iconify-icon icon="{{ $menu['icon'] }}" class="text-xl flex-shrink-0"></iconify-icon>
+                        <span>{{ $menu['label'] }}</span>
+                    </a>
+                @endforeach
+            </div>
+
+            <p class="text-[11px] uppercase tracking-widest text-[#6C757D] font-semibold mt-6 mb-3 px-3">Operasional</p>
+            <div class="space-y-0.5">
+                @foreach ($menus2 as $menu)
+                    @php $isActive = request()->routeIs($menu['route']) || request()->routeIs(str_replace('.index', '.*', $menu['route'])); @endphp
+                    <a href="{{ route($menu['route']) }}"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#495057] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors {{ $isActive ? 'nav-item-active' : '' }}">
+                        <iconify-icon icon="{{ $menu['icon'] }}" class="text-xl flex-shrink-0"></iconify-icon>
+                        <span>{{ $menu['label'] }}</span>
+                    </a>
+                @endforeach
+            </div>
         </nav>
 
-        <div class="p-4 border-t border-slate-200 dark:border-slate-800">
-            <div class="flex items-center justify-between gap-3 px-2 py-2">
-                <div class="min-w-0">
-                    <p class="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">{{ auth()->user()->name }}</p>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ auth()->user()->role ?? 'staff' }}</p>
-                </div>
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button class="text-slate-500 hover:text-red-600" type="submit">
-                        <iconify-icon icon="solar:logout-2-bold-duotone" class="text-xl"></iconify-icon>
-                    </button>
-                </form>
-            </div>
+        <!-- Bottom: Settings + Logout -->
+        <div class="p-4 border-t border-[#E9ECEF] dark:border-[#334155] space-y-0.5">
+            <a href="{{ route('settings.index') }}"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#495057] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors {{ request()->routeIs('settings.*') ? 'nav-item-active' : '' }}">
+                <iconify-icon icon="solar:settings-bold" class="text-xl"></iconify-icon>
+                <span>Pengaturan</span>
+            </a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#DC3545] hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors font-medium">
+                    <iconify-icon icon="solar:logout-2-bold" class="text-xl"></iconify-icon>
+                    <span>Keluar</span>
+                </button>
+            </form>
         </div>
     </aside>
 
-    <div class="flex-1 min-w-0 flex flex-col h-full overflow-hidden">
-        <header class="h-20 flex-shrink-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 lg:px-8">
-            <div class="flex items-center gap-3">
-                <button class="lg:hidden text-slate-600 dark:text-slate-300" @click="sidebarOpen = true">
-                    <iconify-icon icon="solar:hamburger-menu-linear" class="text-2xl"></iconify-icon>
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden">
+
+        <!-- Header -->
+        <header class="h-20 flex-shrink-0 bg-white dark:bg-[#1E1E1E] border-b border-[#E9ECEF] dark:border-[#334155] flex items-center justify-between px-4 lg:px-6 z-10">
+            <div class="flex items-center gap-4">
+                <button @click="sidebarOpen = true" class="md:hidden px-2 py-1 border border-[#E9ECEF] dark:border-[#334155] bg-gray-100 dark:bg-gray-800 rounded-lg text-[#212529] dark:text-white">
+                    <iconify-icon icon="solar:hamburger-menu-outline" class="text-xl pt-1"></iconify-icon>
                 </button>
-                <div>
-                    <h1 class="text-xl lg:text-2xl text-slate-900 dark:text-slate-100 font-semibold tracking-tight">@yield('title', 'Dashboard')</h1>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">EVDesign Manajemen Produk/Catalog</p>
+                <div class="hidden sm:block">
+                    <h1 class="text-lg font-bold text-[#212529] dark:text-white">@yield('title', 'Dashboard')</h1>
+                    <p class="text-xs text-[#6C757D]" id="currentDate"></p>
                 </div>
             </div>
-            <button class="text-slate-600 dark:text-slate-300" @click="toggleDarkMode">
-                <iconify-icon x-show="!darkMode" icon="solar:moon-linear" class="text-xl"></iconify-icon>
-                <iconify-icon x-show="darkMode" icon="solar:sun-2-linear" class="text-xl" x-cloak></iconify-icon>
-            </button>
+
+            <div class="flex items-center gap-3 sm:gap-4">
+                <!-- Search -->
+                <div class="hidden lg:flex items-center bg-[#F8F9FA] dark:bg-[#121212] border border-[#E9ECEF] dark:border-[#334155] rounded-2xl px-3 py-1 w-56 focus-within:border-[#fc1919] focus-within:ring-2 ring-[#fc1919]/20 transition-all">
+                    <iconify-icon icon="solar:magnifer-linear" class="text-[#6C757D] text-lg mr-1"></iconify-icon>
+                    <input type="text" placeholder="Cari data..." class="bg-transparent border-none outline-none w-full text-sm text-[#212529] dark:text-white placeholder-[#6C757D]">
+                </div>
+
+                <!-- Dark Mode Toggle -->
+                <button @click="toggleDarkMode()" class="w-9 h-9 rounded-full flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-[#495057] dark:text-gray-300 hover:text-[#fc1919] transition-colors">
+                    <iconify-icon x-show="!darkMode" icon="solar:moon-bold" class="text-lg"></iconify-icon>
+                    <iconify-icon x-show="darkMode"  icon="solar:sun-bold"  class="text-lg" x-cloak></iconify-icon>
+                </button>
+
+                <!-- Notifications -->
+                <button class="relative w-9 h-9 rounded-full flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-[#495057] dark:text-gray-300 hover:text-[#fc1919] transition-colors">
+                    <iconify-icon icon="solar:bell-bing-bold" class="text-lg"></iconify-icon>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-[#fc1919] rounded-full border-2 border-white dark:border-[#1E1E1E]"></span>
+                </button>
+
+                <div class="w-px h-7 bg-[#E9ECEF] dark:bg-[#334155] hidden sm:block"></div>
+
+                <!-- User -->
+                <div class="flex items-center gap-3 cursor-pointer">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-semibold text-[#212529] dark:text-white leading-tight">{{ auth()->user()->name }}</p>
+                        <p class="text-xs text-[#6C757D]">{{ auth()->user()->role ?? 'Admin' }}</p>
+                    </div>
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=fc1919&color=fff&bold=true&size=80"
+                         alt="Avatar" class="w-9 h-9 rounded-full object-cover border-2 border-[#fc1919]/20">
+                </div>
+            </div>
         </header>
 
-        <main class="flex-1 overflow-y-auto p-4 lg:p-8">
+        <!-- Page Content -->
+        <div class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
             @yield('content')
-        </main>
-    </div>
-</div>
+        </div>
+    </main>
 
-<script>
-    function dashboardShell() {
-        return {
-            sidebarOpen: false,
-            darkMode: false,
-            init() {
-                const saved = localStorage.getItem('evdesign-theme');
-                this.darkMode = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-            },
-            toggleDarkMode() {
-                this.darkMode = !this.darkMode;
-                localStorage.setItem('evdesign-theme', this.darkMode ? 'dark' : 'light');
+    <!-- Toastify JS -->
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <script>
+        // Realtime date
+        const dateEl = document.getElementById('currentDate');
+        if (dateEl) {
+            dateEl.innerText = new Date().toLocaleDateString('id-ID', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+        }
+
+        function dashboardShell() {
+            return {
+                sidebarOpen: false,
+                darkMode: localStorage.getItem('color-theme') === 'dark' ||
+                          (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches),
+                init() {
+                    if (this.darkMode) document.documentElement.classList.add('dark');
+                    else document.documentElement.classList.remove('dark');
+                },
+                toggleDarkMode() {
+                    this.darkMode = !this.darkMode;
+                    if (this.darkMode) {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    }
+                }
             }
         }
-    }
-</script>
-</script>
-<!-- Toastify JS -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        @if(session('success'))
-            Toastify({
-                text: "{{ session('success') }}",
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                style: {
-                    background: "linear-gradient(to right, #00b09b, #96c93d)",
-                    borderRadius: "10px",
-                }
-            }).showToast();
-        @endif
 
-        @if($errors->any())
-            @foreach($errors->all() as $error)
-                Toastify({
-                    text: "{{ $error }}",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                    style: {
-                        background: "linear-gradient(to right, #ff5f6d, #ffc371)",
-                        borderRadius: "10px",
-                    }
-                }).showToast();
-            @endforeach
+        // Toast notifications from session flash
+        @if(session('success'))
+            document.addEventListener('DOMContentLoaded', () => {
+                Toastify({ text: "{{ session('success') }}", duration: 3500, gravity: "top", position: "right",
+                    style: { background: "linear-gradient(to right, #28A745, #20c554)", borderRadius: "10px" }, stopOnFocus: true }).showToast();
+            });
         @endif
-        
+        @if(session('error'))
+            document.addEventListener('DOMContentLoaded', () => {
+                Toastify({ text: "{{ session('error') }}", duration: 4000, gravity: "top", position: "right",
+                    style: { background: "linear-gradient(to right, #DC3545, #c82333)", borderRadius: "10px" }, stopOnFocus: true }).showToast();
+            });
+        @endif
         @if(session('info'))
-            Toastify({
-                text: "{{ session('info') }}",
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                style: {
-                    background: "linear-gradient(to right, #2193b0, #6dd5ed)",
-                    borderRadius: "10px",
-                }
-            }).showToast();
+            document.addEventListener('DOMContentLoaded', () => {
+                Toastify({ text: "{{ session('info') }}", duration: 3500, gravity: "top", position: "right",
+                    style: { background: "linear-gradient(to right, #17A2B8, #138496)", borderRadius: "10px" }, stopOnFocus: true }).showToast();
+            });
         @endif
-    });
-</script>
+    </script>
 </body>
 </html>

@@ -1,54 +1,93 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ config('app.name', 'EVDesign') }}</title>
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <!-- Fonts — same as dashboard -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <!-- Iconify — same as dashboard -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans text-gray-900 antialiased selection:bg-indigo-500 selection:text-white">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gradient-to-br from-indigo-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
-            <div class="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-blob dark:opacity-10 dark:mix-blend-screen"></div>
-            <div class="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-blob animation-delay-2000 dark:bg-yellow-600 dark:opacity-10 dark:mix-blend-screen"></div>
-            <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-blob animation-delay-4000 dark:opacity-10 dark:mix-blend-screen"></div>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-            <div class="relative z-10 w-full sm:max-w-md">
-                <div class="flex justify-center mb-8">
-                    <a href="/" class="transform transition hover:scale-105 duration-300">
-                        <x-application-logo class="w-24 h-24 fill-current text-indigo-600 dark:text-indigo-400 drop-shadow-md" />
-                    </a>
-                </div>
+    <style>
+        *, body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-                <div class="w-full px-8 py-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl shadow-2xl overflow-hidden sm:rounded-2xl border border-white/20 dark:border-gray-700/50">
-                    {{ $slot }}
-                </div>
+        /* Input focus ring overrides */
+        input:focus { outline: none; border-color: #fc1919 !important; box-shadow: 0 0 0 3px rgba(252,25,25,0.12); }
+        input[type="checkbox"] { accent-color: #fc1919; }
+
+        /* Subtle red diagonal stripe pattern on left panel */
+        .auth-pattern {
+            background-color: #fc1919;
+            background-image: repeating-linear-gradient(
+                -45deg,
+                rgba(255,255,255,0.04) 0px,
+                rgba(255,255,255,0.04) 2px,
+                transparent 2px,
+                transparent 12px
+            );
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeup { animation: fadeUp 0.45s ease both; }
+    </style>
+</head>
+<body class="bg-[#F8F9FA] text-[#212529] antialiased min-h-screen flex">
+
+    {{-- Left panel (decorative, hidden on mobile) --}}
+    <div class="hidden lg:flex lg:w-2/5 xl:w-1/2 auth-pattern flex-col justify-between p-12 relative overflow-hidden">
+        <!-- Brand -->
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                <iconify-icon icon="solar:shop-bold" class="text-2xl text-white"></iconify-icon>
             </div>
+            <span class="text-2xl font-bold text-white tracking-tight">EVDesign<span class="opacity-60">.</span></span>
         </div>
-        
-        <style>
-            @keyframes blob {
-                0% { transform: translate(0px, 0px) scale(1); }
-                33% { transform: translate(30px, -50px) scale(1.1); }
-                66% { transform: translate(-20px, 20px) scale(0.9); }
-                100% { transform: translate(0px, 0px) scale(1); }
-            }
-            .animate-blob {
-                animation: blob 7s infinite;
-            }
-            .animation-delay-2000 {
-                animation-delay: 2s;
-            }
-            .animation-delay-4000 {
-                animation-delay: 4s;
-            }
-        </style>
-    </body>
+
+        <!-- Tagline -->
+        <div class="text-white">
+            <h2 class="text-4xl font-bold leading-tight mb-4">
+                Pelestarian<br>Wastra Gorontalo
+            </h2>
+            <p class="text-white/70 text-base leading-relaxed">
+                Platform digital untuk mengelola produk, perajin, dan kisah di balik keindahan kain tradisional Gorontalo.
+            </p>
+        </div>
+
+        <!-- Decorative circle -->
+        <div class="absolute -bottom-24 -right-24 w-64 h-64 rounded-full bg-white/10"></div>
+        <div class="absolute top-1/2 -right-12 w-32 h-32 rounded-full bg-white/5"></div>
+    </div>
+
+    {{-- Right panel (form) --}}
+    <div class="flex-1 flex flex-col justify-center items-center p-6 lg:p-12 bg-white dark:bg-[#121212]">
+        <!-- Mobile logo -->
+        <div class="lg:hidden flex items-center gap-2 mb-8">
+            <div class="w-8 h-8 bg-[#fc1919] rounded-lg flex items-center justify-center">
+                <iconify-icon icon="solar:shop-bold" class="text-white text-lg"></iconify-icon>
+            </div>
+            <span class="text-xl font-bold text-[#212529] dark:text-white">EVDesign<span class="text-[#fc1919]">.</span></span>
+        </div>
+
+        <div class="w-full max-w-md animate-fadeup">
+            {{ $slot }}
+        </div>
+
+        <p class="mt-10 text-xs text-[#6C757D] text-center">
+            &copy; {{ date('Y') }} EVDesign - Pelestarian Wastra Gorontalo
+        </p>
+    </div>
+
+</body>
 </html>

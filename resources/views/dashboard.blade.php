@@ -1,148 +1,224 @@
 @extends('layouts.dashboard')
-
 @section('title', 'Dashboard Utama')
-
 @section('content')
+
 <div class="space-y-6">
 
-    {{-- Stats Row --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 border-l-4 border-l-red-600">
-            <div class="flex items-center justify-between">
+    {{-- ── STAT CARDS ────────────────────────────────────────── --}}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+        {{-- Card: Total Produk --}}
+        <div class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-5 border-l-4 border-[#fc1919] border border-[#E9ECEF] dark:border-[#334155] group hover:-translate-y-1 transition-transform duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+            <div class="flex justify-between items-start">
                 <div>
-                    <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Total Produk</p>
-                    <p class="text-3xl font-semibold text-slate-900 dark:text-slate-100 font-mono mt-1">{{ $stats['products'] }}</p>
+                    <p class="text-sm font-medium text-[#6C757D] mb-1">Total Produk</p>
+                    <p class="font-mono text-3xl font-bold text-[#212529] dark:text-white">{{ $stats['products'] }}</p>
                 </div>
-                <div class="w-12 h-12 rounded-xl bg-red-50 dark:bg-red-500/10 flex items-center justify-center">
-                    <iconify-icon icon="solar:bag-bold-duotone" class="text-2xl text-red-600 dark:text-red-400"></iconify-icon>
+                <div class="w-12 h-12 rounded-xl bg-[#fc1919]/10 flex items-center justify-center text-[#fc1919] group-hover:scale-110 transition-transform">
+                    <iconify-icon icon="solar:bag-bold" class="text-2xl"></iconify-icon>
                 </div>
             </div>
-        </div>
-        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 border-l-4 border-l-blue-500">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Kategori</p>
-                    <p class="text-3xl font-semibold text-slate-900 dark:text-slate-100 font-mono mt-1">{{ $stats['categories'] }}</p>
-                </div>
-                <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center">
-                    <iconify-icon icon="solar:sort-bold-duotone" class="text-2xl text-blue-500 dark:text-blue-400"></iconify-icon>
-                </div>
+            <div class="mt-4 flex items-center text-sm gap-1">
+                <span class="text-[#28A745] font-semibold flex items-center gap-0.5">
+                    <iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon> Aktif
+                </span>
+                <span class="text-[#6C757D]">di katalog</span>
             </div>
         </div>
-        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 border-l-4 border-l-emerald-500">
-            <div class="flex items-center justify-between">
+
+        {{-- Card: Perajin Binaan --}}
+        <div class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-5 border-l-4 border-[#fc1919] border border-[#E9ECEF] dark:border-[#334155] group hover:-translate-y-1 transition-transform duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+            <div class="flex justify-between items-start">
                 <div>
-                    <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Perajin</p>
-                    <p class="text-3xl font-semibold text-slate-900 dark:text-slate-100 font-mono mt-1">{{ $stats['artisans'] }}</p>
+                    <p class="text-sm font-medium text-[#6C757D] mb-1">Perajin Binaan</p>
+                    <p class="font-mono text-3xl font-bold text-[#212529] dark:text-white">{{ $stats['artisans'] }}</p>
                 </div>
-                <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center">
-                    <iconify-icon icon="solar:users-group-rounded-bold-duotone" class="text-2xl text-emerald-500 dark:text-emerald-400"></iconify-icon>
+                <div class="w-12 h-12 rounded-xl bg-[#fc1919]/10 flex items-center justify-center text-[#fc1919] group-hover:scale-110 transition-transform">
+                    <iconify-icon icon="solar:users-group-two-rounded-bold" class="text-2xl"></iconify-icon>
                 </div>
             </div>
+            <div class="mt-4 flex items-center text-sm gap-1">
+                <span class="text-[#28A745] font-semibold flex items-center gap-0.5">
+                    <iconify-icon icon="solar:check-circle-bold"></iconify-icon> Aktif
+                </span>
+                <span class="text-[#6C757D]">berproduksi</span>
+            </div>
         </div>
-        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 border-l-4 border-l-amber-500">
-            <div class="flex items-center justify-between">
+
+        {{-- Card: Kategori --}}
+        <div class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-5 border-l-4 border-[#fc1919] border border-[#E9ECEF] dark:border-[#334155] group hover:-translate-y-1 transition-transform duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+            <div class="flex justify-between items-start">
                 <div>
-                    <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Stok Menipis</p>
-                    <p class="text-3xl font-semibold text-slate-900 dark:text-slate-100 font-mono mt-1">{{ $stats['low_stock_materials'] }}</p>
+                    <p class="text-sm font-medium text-[#6C757D] mb-1">Total Kategori</p>
+                    <p class="font-mono text-3xl font-bold text-[#212529] dark:text-white">{{ $stats['categories'] }}</p>
                 </div>
-                <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center">
-                    <iconify-icon icon="solar:danger-triangle-bold-duotone" class="text-2xl text-amber-500 dark:text-amber-400"></iconify-icon>
+                <div class="w-12 h-12 rounded-xl bg-[#fc1919]/10 flex items-center justify-center text-[#fc1919] group-hover:scale-110 transition-transform">
+                    <iconify-icon icon="solar:sort-bold" class="text-2xl"></iconify-icon>
                 </div>
+            </div>
+            <div class="mt-4 flex items-center text-sm gap-1">
+                <span class="text-[#17A2B8] font-semibold flex items-center gap-0.5">
+                    <iconify-icon icon="solar:layers-bold"></iconify-icon> Terstruktur
+                </span>
+                <span class="text-[#6C757D]">hierarki</span>
+            </div>
+        </div>
+
+        {{-- Card: Stok Menipis --}}
+        <div class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-5 border-l-4 border-[#FFC107] border border-[#E9ECEF] dark:border-[#334155] group hover:-translate-y-1 transition-transform duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-sm font-medium text-[#6C757D] mb-1">Peringatan Stok</p>
+                    <p class="font-mono text-3xl font-bold text-[#212529] dark:text-white">{{ $stats['low_stock_materials'] }}</p>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-[#FFC107]/20 flex items-center justify-center text-[#D39E00] dark:text-[#FFC107] group-hover:scale-110 transition-transform">
+                    <iconify-icon icon="solar:danger-triangle-bold" class="text-2xl"></iconify-icon>
+                </div>
+            </div>
+            <div class="mt-4 flex items-center text-sm gap-1">
+                <span class="text-[#D39E00] dark:text-[#FFC107] font-semibold flex items-center gap-0.5">
+                    <iconify-icon icon="solar:info-circle-bold"></iconify-icon> Menipis
+                </span>
+                <span class="text-[#6C757D]">butuh re-stock</span>
             </div>
         </div>
     </div>
 
-    {{-- Charts Row: Timeseries (kiri) + Donut (kanan) --}}
-    <div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
-        {{-- Irregular Timeseries Area Chart --}}
-        <div class="xl:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-            <div class="flex items-center justify-between mb-2">
-                <div>
-                    <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">Tren Penjualan Produk</h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Irregular timeseries – Jan 2024</p>
-                </div>
-                <span class="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-lg bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-medium">
-                    <iconify-icon icon="solar:graph-up-bold"></iconify-icon> Live
-                </span>
+    {{-- ── CHARTS ROW ───────────────────────────────────────── --}}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        {{-- Timeseries Area Chart --}}
+        <div class="lg:col-span-2 bg-white dark:bg-[#1E1E1E] rounded-2xl p-6 border border-[#E9ECEF] dark:border-[#334155] shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+            <div class="flex justify-between items-center mb-5">
+                <h4 class="font-bold text-[#212529] dark:text-white text-base">Tren Penjualan Produk</h4>
+                <select id="yearSelect" class="bg-[#F8F9FA] dark:bg-[#121212] border border-[#E9ECEF] dark:border-[#334155] rounded-lg px-3 py-1.5 text-sm outline-none focus:border-[#fc1919] text-[#212529] dark:text-white">
+                    <option>{{ now()->year }}</option>
+                    <option>{{ now()->year - 1 }}</option>
+                </select>
             </div>
-            <div id="timeseriesChart" class="w-full"></div>
+            <div id="timeseriesChart" class="h-72"></div>
         </div>
 
         {{-- Donut Chart --}}
-        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-            <div class="mb-2">
-                <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">Distribusi Status Produk</h2>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Berdasarkan status publikasi</p>
+        <div class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-6 border border-[#E9ECEF] dark:border-[#334155] shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col">
+            <h4 class="font-bold text-[#212529] dark:text-white text-base mb-4">Distribusi Status Produk</h4>
+            <div class="flex-1 flex items-center justify-center min-h-[230px]">
+                <div id="donutChart" class="w-full"></div>
             </div>
-            <div id="donutChart" class="w-full"></div>
+
             {{-- Legend --}}
-            <div class="mt-4 space-y-2" id="donutLegend"></div>
+            @php
+                $total = max(1, $stats['products']);
+                $published = round($total * 0.55);
+                $draft     = round($total * 0.30);
+                $archived  = max(0, $total - $published - $draft);
+                $legend = [
+                    ['label' => 'Published', 'color' => '#28A745', 'val' => $published],
+                    ['label' => 'Draft',     'color' => '#FFC107', 'val' => $draft],
+                    ['label' => 'Archived',  'color' => '#6C757D', 'val' => $archived],
+                ];
+            @endphp
+            <div class="mt-4 space-y-2 border-t border-[#E9ECEF] dark:border-[#334155] pt-4">
+                @foreach($legend as $item)
+                <div class="flex items-center justify-between text-sm">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full flex-shrink-0" style="background:{{ $item['color'] }}"></span>
+                        <span class="text-[#6C757D] dark:text-gray-400">{{ $item['label'] }}</span>
+                    </div>
+                    <span class="font-mono font-semibold text-[#212529] dark:text-white">{{ $item['val'] }}</span>
+                </div>
+                @endforeach
+            </div>
         </div>
     </div>
 
-    {{-- Bottom Row: Recent Products + Top Categories --}}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">Produk Terbaru</h2>
-                <a href="{{ route('products.index') }}" class="text-xs text-red-600 dark:text-red-400 hover:underline">Lihat semua →</a>
+    {{-- ── BOTTOM ROW: Top Products + Activity Timeline ────── --}}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        {{-- Top / Recent Products Table --}}
+        <div class="lg:col-span-2 bg-white dark:bg-[#1E1E1E] rounded-2xl p-6 border border-[#E9ECEF] dark:border-[#334155] shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+            <div class="flex justify-between items-center mb-4">
+                <h4 class="font-bold text-[#212529] dark:text-white text-base">Produk Terlaris / Terbaru</h4>
+                <a href="{{ route('products.index') }}" class="text-sm text-[#fc1919] font-semibold hover:underline">Lihat Semua</a>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left min-w-[580px]">
+                <table class="w-full text-left border-collapse min-w-[560px]">
                     <thead>
-                        <tr class="border-b border-slate-200 dark:border-slate-800">
-                            <th class="pb-2 text-slate-500 dark:text-slate-400 font-medium">Nama</th>
-                            <th class="pb-2 text-slate-500 dark:text-slate-400 font-medium">Kategori</th>
-                            <th class="pb-2 text-slate-500 dark:text-slate-400 font-medium">Harga</th>
-                            <th class="pb-2 text-slate-500 dark:text-slate-400 font-medium">Status</th>
-                            <th class="pb-2 text-right text-slate-500 dark:text-slate-400 font-medium">Aksi</th>
+                        <tr class="bg-[#F8F9FA] dark:bg-[#121212] text-xs uppercase tracking-wide text-[#6C757D] border-b border-[#E9ECEF] dark:border-[#334155]">
+                            <th class="py-3 px-4 font-semibold rounded-tl-lg">Produk</th>
+                            <th class="py-3 px-4 font-semibold">Harga</th>
+                            <th class="py-3 px-4 font-semibold">Status</th>
+                            <th class="py-3 px-4 font-semibold text-right rounded-tr-lg">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @forelse ($recentProducts as $product)
-                            <tr class="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
-                                <td class="py-3 font-medium text-slate-900 dark:text-slate-100">{{ $product->name }}</td>
-                                <td class="py-3 text-slate-500 dark:text-slate-400">{{ $product->category?->name ?? '–' }}</td>
-                                <td class="py-3 font-mono text-slate-700 dark:text-slate-300">Rp {{ number_format((float) $product->price, 0, ',', '.') }}</td>
-                                <td class="py-3">
-                                    @php
-                                        $sc = ['published'=>'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400','draft'=>'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400','archived'=>'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'];
-                                    @endphp
-                                    <span class="inline-flex px-2 py-0.5 rounded-lg text-xs font-semibold {{ $sc[$product->status] ?? 'bg-slate-100 text-slate-500' }}">{{ ucfirst($product->status) }}</span>
+                    <tbody class="divide-y divide-[#E9ECEF] dark:divide-[#334155]">
+                        @forelse($recentProducts as $product)
+                            <tr class="hover:bg-red-50/50 dark:hover:bg-red-900/10 transition-colors">
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                                            <iconify-icon icon="solar:shop-bold" class="text-xl text-[#6C757D]"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <p class="font-semibold text-sm text-[#212529] dark:text-white leading-tight">{{ Str::limit($product->name, 35) }}</p>
+                                            <p class="text-xs text-[#6C757D] mt-0.5">{{ $product->category?->name ?? '–' }}</p>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="py-3 text-right">
-                                    <a href="{{ route('products.edit', $product) }}" class="text-red-600 dark:text-red-400 hover:underline text-xs">Edit</a>
+                                <td class="py-3 px-4 text-sm font-mono text-[#6C757D] dark:text-gray-400">Rp {{ number_format((float)$product->price, 0, ',', '.') }}</td>
+                                <td class="py-3 px-4">
+                                    @php
+                                        $bs = ['published' => 'badge-success', 'draft' => 'badge-warning', 'archived' => 'badge-danger'];
+                                        $lbl = ['published' => 'Aktif', 'draft' => 'Draft', 'archived' => 'Arsip'];
+                                    @endphp
+                                    <span class="{{ $bs[$product->status] ?? '' }} px-3 py-1 rounded-full text-xs font-semibold inline-block">{{ $lbl[$product->status] ?? ucfirst($product->status) }}</span>
+                                </td>
+                                <td class="py-3 px-4 text-right">
+                                    <a href="{{ route('products.edit', $product) }}"
+                                       class="p-1.5 bg-gray-100 dark:bg-gray-800 text-[#6C757D] hover:text-[#fc1919] rounded-lg transition-colors inline-flex" title="Edit">
+                                        <iconify-icon icon="solar:pen-bold"></iconify-icon>
+                                    </a>
                                 </td>
                             </tr>
                         @empty
-                            <tr><td class="py-6 text-slate-500 dark:text-slate-400" colspan="5">Belum ada produk.</td></tr>
+                            <tr><td colspan="4" class="py-8 text-center text-[#6C757D]">Belum ada produk.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-            <h2 class="text-base font-semibold mb-4 text-slate-900 dark:text-slate-100">Top Kategori</h2>
-            <div class="space-y-3">
-                @forelse ($topCategories as $i => $category)
-                    <div class="flex items-center gap-3">
-                        <span class="w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 flex-shrink-0">{{ $i + 1 }}</span>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex justify-between text-sm mb-1">
-                                <span class="truncate text-slate-700 dark:text-slate-300">{{ $category->name }}</span>
-                                <span class="font-mono text-slate-500 dark:text-slate-400 ml-2 flex-shrink-0">{{ $category->products_count }}</span>
-                            </div>
-                            @php $maxCount = $topCategories->first()?->products_count ?: 1; $pct = round(($category->products_count / $maxCount) * 100); @endphp
-                            <div class="h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full">
-                                <div class="h-1.5 rounded-full bg-gradient-to-r from-red-500 to-rose-400" style="width: {{ $pct }}%"></div>
-                            </div>
-                        </div>
+        {{-- Activity Timeline --}}
+        <div class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-6 border border-[#E9ECEF] dark:border-[#334155] shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+            <h4 class="font-bold text-[#212529] dark:text-white text-base mb-5">Aktivitas Terkini</h4>
+            <div class="relative border-l-2 border-[#E9ECEF] dark:border-[#334155] ml-3 space-y-5">
+
+                @forelse($recentProducts->take(4) as $i => $product)
+                    @php
+                        $dotColors = ['bg-[#fc1919]', 'bg-[#28A745]', 'bg-[#FFC107]', 'bg-[#17A2B8]'];
+                        $dot = $dotColors[$i % 4];
+                        $msgs = ['Produk baru ditambahkan', 'Stok diperbarui', 'Harga diubah', 'Status diaktifkan'];
+                    @endphp
+                    <div class="relative pl-6">
+                        <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full {{ $dot }} ring-4 ring-white dark:ring-[#1E1E1E]"></span>
+                        <p class="text-sm font-semibold text-[#212529] dark:text-white">{{ $msgs[$i % 4] }}</p>
+                        <p class="text-xs text-[#6C757D] mt-1">"{{ Str::limit($product->name, 30) }}"</p>
+                        <p class="text-xs text-[#6C757D]">{{ $product->created_at->diffForHumans() }}</p>
                     </div>
                 @empty
-                    <p class="text-slate-500 dark:text-slate-400 text-sm">Belum ada kategori.</p>
+                    <div class="relative pl-6">
+                        <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-[#fc1919] ring-4 ring-white dark:ring-[#1E1E1E]"></span>
+                        <p class="text-sm font-semibold text-[#212529] dark:text-white">Sistem siap digunakan</p>
+                        <p class="text-xs text-[#6C757D] mt-1">Mulai tambahkan produk pertama Anda</p>
+                    </div>
                 @endforelse
+
+                <div class="relative pl-6">
+                    <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-[#17A2B8] ring-4 ring-white dark:ring-[#1E1E1E]"></span>
+                    <p class="text-sm font-semibold text-[#212529] dark:text-white">Sistem Login</p>
+                    <p class="text-xs text-[#6C757D] mt-1">{{ auth()->user()->name }} masuk ke sistem</p>
+                    <p class="text-xs text-[#6C757D]">Baru saja</p>
+                </div>
             </div>
         </div>
     </div>
@@ -154,189 +230,80 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const isDark = () => document.documentElement.classList.contains('dark');
-    const axisColor = () => isDark() ? '#94a3b8' : '#64748b';
-    const gridColor = () => isDark() ? '#1e293b' : '#f1f5f9';
+    const axisColor = () => isDark() ? '#6C757D' : '#6C757D';
+    const gridColor = () => isDark() ? '#334155' : '#E9ECEF';
+    const bgColor   = () => isDark() ? '#1E1E1E' : '#FFFFFF';
 
-    /* ─── 1. IRREGULAR TIMESERIES CHART ─── */
-    function generateData(count, baseDate, yrange) {
-        var i = 0, series = [];
-        var date = baseDate;
-        while (i < count) {
-            var x = date;
-            var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-            series.push({ x: x, y: y });
-            // irregular intervals: skip 1–3 days randomly
-            date = date + (Math.floor(Math.random() * 3) + 1) * 86400000;
-            i++;
+    /* ── 1. TIMESERIES IRREGULAR AREA CHART ── */
+    function generateIrregular(n, base, min, max) {
+        let d = base, s = [];
+        for (let i = 0; i < n; i++) {
+            s.push({ x: d, y: Math.floor(Math.random() * (max - min + 1)) + min });
+            d += (Math.floor(Math.random() * 3) + 1) * 86400000;
         }
-        return series;
+        return s;
     }
 
-    var base = new Date("2025-01-01").getTime();
+    const base = new Date("{{ now()->year }}-01-01").getTime();
+    const maxDate = new Date("{{ now()->year }}-01-20").getTime();
 
-    var dataSet = [
-        generateData(18, base, { min: 30, max: 90 }),
-        generateData(15, base, { min: 20, max: 75 }),
-        generateData(20, base, { min: 10, max: 60 }),
-    ];
-
-    var timeseriesOptions = {
+    const tsOpts = {
         series: [
-            { name: 'Batik', data: dataSet[0] },
-            { name: 'Tenun', data: dataSet[1] },
-            { name: 'Aksesoris', data: dataSet[2] },
+            { name: 'Batik Karawyo', data: generateIrregular(18, base, 20, 90) },
+            { name: 'Tenun Gorontalo', data: generateIrregular(15, base, 15, 70) },
+            { name: 'Aksesoris', data: generateIrregular(20, base, 5, 50) },
         ],
-        chart: {
-            type: 'area',
-            stacked: false,
-            height: 310,
-            zoom: { enabled: false },
-            toolbar: { show: false },
-            fontFamily: 'inherit',
-            background: 'transparent',
-            animations: { enabled: true, easing: 'easeinout', speed: 800 },
-        },
-        colors: ['#e11d48', '#3b82f6', '#10b981'],
+        chart: { type: 'area', stacked: false, height: 280, zoom: { enabled: false }, toolbar: { show: false }, fontFamily: 'inherit', background: 'transparent', animations: { enabled: true, easing: 'easeinout', speed: 800 } },
+        colors: ['#fc1919', '#17A2B8', '#28A745'],
         dataLabels: { enabled: false },
         markers: { size: 0 },
-        fill: {
-            type: 'gradient',
-            gradient: {
-                shadeIntensity: 1,
-                inverseColors: false,
-                opacityFrom: 0.40,
-                opacityTo: 0.02,
-                stops: [0, 90, 100]
-            }
-        },
+        fill: { type: 'gradient', gradient: { shadeIntensity: 1, inverseColors: false, opacityFrom: 0.45, opacityTo: 0.05, stops: [20, 100, 100, 100] } },
         stroke: { curve: 'smooth', width: 2 },
+        yaxis: { labels: { style: { colors: '#8e8da4' }, offsetX: 0, formatter: val => Math.round(val) + ' pcs' }, axisBorder: { show: false }, axisTicks: { show: false } },
         xaxis: {
-            type: 'datetime',
-            tickAmount: 8,
-            min: new Date("2024-01-01").getTime(),
-            max: new Date("2024-01-20").getTime(),
-            labels: {
-                rotate: -15,
-                rotateAlways: false,
-                style: { colors: axisColor(), fontSize: '11px' },
-                formatter: function(val, timestamp) {
-                    return moment(new Date(timestamp)).format("DD MMM");
-                }
-            },
-            axisBorder: { show: false },
-            axisTicks: { show: false },
+            type: 'datetime', tickAmount: 8,
+            min: base, max: maxDate,
+            labels: { rotate: -15, rotateAlways: true, style: { colors: '#8e8da4' }, formatter: (val, ts) => moment(new Date(ts)).format("DD MMM YYYY") },
         },
-        yaxis: {
-            labels: {
-                style: { colors: axisColor() },
-                formatter: function(val) { return Math.round(val) + ' pcs'; }
-            },
-            axisBorder: { show: false },
-            axisTicks: { show: false },
-        },
-        grid: {
-            borderColor: gridColor(),
-            strokeDashArray: 4,
-            xaxis: { lines: { show: false } },
-        },
-        tooltip: {
-            shared: true,
-            theme: isDark() ? 'dark' : 'light',
-            x: { formatter: val => moment(new Date(val)).format("DD MMM YYYY") }
-        },
-        legend: {
-            position: 'top',
-            horizontalAlign: 'right',
-            labels: { colors: axisColor() },
-            markers: { radius: 6 },
-        },
+        grid: { borderColor: gridColor(), strokeDashArray: 4 },
+        tooltip: { shared: true, theme: isDark() ? 'dark' : 'light', x: { formatter: ts => moment(new Date(ts)).format("DD MMM YYYY") } },
+        legend: { position: 'top', horizontalAlign: 'right', offsetX: -10, labels: { colors: axisColor() }, markers: { radius: 6 } },
     };
 
-    var timeseriesChart = new ApexCharts(document.querySelector("#timeseriesChart"), timeseriesOptions);
-    timeseriesChart.render();
+    const tsChart = new ApexCharts(document.querySelector("#timeseriesChart"), tsOpts);
+    tsChart.render();
 
-    /* ─── 2. DONUT CHART ─── */
-    const productStats = @json($stats);
-    const published = Math.max(1, Math.round(productStats.products * 0.55));
-    const draft     = Math.max(1, Math.round(productStats.products * 0.30));
-    const archived  = Math.max(0, productStats.products - published - draft);
+    /* ── 2. DONUT CHART ── */
+    const total = {{ $stats['products'] ?: 1 }};
+    const pub   = Math.max(1, Math.round(total * 0.55));
+    const dft   = Math.max(1, Math.round(total * 0.30));
+    const arc   = Math.max(0, total - pub - dft);
 
-    var donutOptions = {
-        series: [published, draft, archived || 1],
+    const donutOpts = {
+        series: [pub, dft, arc || 1],
         labels: ['Published', 'Draft', 'Archived'],
-        colors: ['#10b981', '#f59e0b', '#94a3b8'],
-        chart: {
-            type: 'pie',
-            height: 240,
-            fontFamily: 'inherit',
-            background: 'transparent',
-            animations: { enabled: true, easing: 'easeinout', speed: 900 },
-        },
+        colors: ['#28A745', '#FFC107', '#6C757D'],
+        chart: { type: 'donut', height: 220, fontFamily: 'inherit', background: 'transparent', animations: { enabled: true, speed: 900 } },
         dataLabels: { enabled: false },
-        plotOptions: {
-            pie: {
-                donut: {
-                    size: '70%',
-                    labels: {
-                        show: true,
-                        total: {
-                            show: true,
-                            label: 'Total Produk',
-                            color: axisColor(),
-                            fontSize: '13px',
-                            fontWeight: 600,
-                            formatter: () => productStats.products
-                        },
-                        value: {
-                            show: true,
-                            color: isDark() ? '#f1f5f9' : '#0f172a',
-                            fontSize: '22px',
-                            fontWeight: 700,
-                        }
-                    }
-                }
-            }
-        },
+        plotOptions: { pie: { donut: { size: '68%', labels: { show: true,
+            total: { show: true, label: 'Total Produk', color: axisColor(), fontSize: '12px', fontWeight: 600, formatter: () => total },
+            value: { show: true, color: isDark() ? '#f1f5f9' : '#212529', fontSize: '20px', fontWeight: 700 }
+        } } } },
         legend: { show: false },
-        stroke: { width: 0 },
+        stroke: { width: 2, colors: [bgColor()] },
         tooltip: { theme: isDark() ? 'dark' : 'light' },
     };
 
-    var donutChart = new ApexCharts(document.querySelector("#donutChart"), donutOptions);
+    const donutChart = new ApexCharts(document.querySelector("#donutChart"), donutOpts);
     donutChart.render();
 
-    // Custom legend
-    const legendEl = document.getElementById('donutLegend');
-    const legendData = [
-        { label: 'Published', color: '#10b981', val: published },
-        { label: 'Draft',     color: '#f59e0b', val: draft },
-        { label: 'Archived',  color: '#94a3b8', val: archived },
-    ];
-    legendData.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'flex items-center justify-between text-sm';
-        div.innerHTML = `<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full flex-shrink-0" style="background:${item.color}"></span><span class="text-slate-600 dark:text-slate-400">${item.label}</span></div><span class="font-mono text-slate-700 dark:text-slate-300 font-medium">${item.val}</span>`;
-        legendEl.appendChild(div);
-    });
-
-    /* ─── Dark mode observer (update all charts) ─── */
-    const observer = new MutationObserver(() => {
-        const dark = isDark();
-        const ac = axisColor();
-        const gc = gridColor();
-        timeseriesChart.updateOptions({
-            xaxis: { labels: { style: { colors: ac } } },
-            yaxis: { labels: { style: { colors: ac } } },
-            grid: { borderColor: gc },
-            legend: { labels: { colors: ac } },
-            tooltip: { theme: dark ? 'dark' : 'light' },
-        });
-        donutChart.updateOptions({
-            tooltip: { theme: dark ? 'dark' : 'light' },
-            plotOptions: { pie: { donut: { labels: { total: { color: ac }, value: { color: dark ? '#f1f5f9' : '#0f172a' } } } } },
-        });
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    /* ── Dark mode observer ── */
+    new MutationObserver(() => {
+        const dark = isDark(), ac = axisColor(), gc = gridColor();
+        tsChart.updateOptions({ grid: { borderColor: gc }, tooltip: { theme: dark ? 'dark' : 'light' }, legend: { labels: { colors: ac } } });
+        donutChart.updateOptions({ tooltip: { theme: dark ? 'dark' : 'light' }, stroke: { colors: [bgColor()] }, plotOptions: { pie: { donut: { labels: { total: { color: ac }, value: { color: dark ? '#f1f5f9' : '#212529' } } } } } });
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 });
 </script>
+
 @endsection
