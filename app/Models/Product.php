@@ -52,6 +52,11 @@ class Product extends Model
         'is_new' => 'boolean',
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
@@ -72,24 +77,6 @@ class Product extends Model
         return $this->hasMany(ProductVariant::class);
     }
 
-    public function artisans(): BelongsToMany
-    {
-        return $this->belongsToMany(Artisan::class, 'artisan_product')
-            ->withPivot('quantity_made', 'production_date', 'notes')
-            ->withTimestamps();
-    }
-
-    public function materialsRelation(): BelongsToMany
-    {
-        return $this->belongsToMany(Material::class, 'product_material')
-            ->withPivot('quantity_used', 'unit', 'notes')
-            ->withTimestamps();
-    }
-
-    public function tags(): BelongsToMany
-    {
-        return $this->belongsToMany(Tag::class, 'product_tag')->withTimestamps();
-    }
 
     public function creator(): BelongsTo
     {

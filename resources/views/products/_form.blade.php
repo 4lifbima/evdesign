@@ -1,7 +1,4 @@
 @php
-    $selectedTags = old('tag_ids', isset($product) ? $product->tags->pluck('id')->all() : []);
-    $selectedArtisans = old('artisan_ids', isset($product) ? $product->artisans->pluck('id')->all() : []);
-    $selectedMaterials = old('material_ids', isset($product) ? $product->materialsRelation->pluck('id')->all() : []);
     $imagePaths = old('image_paths', isset($product) ? $product->images->pluck('image_path')->all() : ['']);
     $variantNames = old('variant_names', isset($product) ? $product->variants->pluck('name')->all() : ['']);
     $variantColors = old('variant_colors', isset($product) ? $product->variants->pluck('color')->all() : ['']);
@@ -108,36 +105,6 @@
     </div>
 </div>
 
-{{-- Relations --}}
-<div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-    <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide mb-4">Relasi</h3>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-            <label class="{{ $labelCls }}">Tag (Ctrl+klik multi)</label>
-            <select name="tag_ids[]" multiple class="{{ $inputCls }} h-32">
-                @foreach($tags as $tag)
-                    <option value="{{ $tag->id }}" @selected(in_array($tag->id, $selectedTags))>{{ $tag->name }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div>
-            <label class="{{ $labelCls }}">Perajin (Ctrl+klik multi)</label>
-            <select name="artisan_ids[]" multiple class="{{ $inputCls }} h-32">
-                @foreach($artisans as $artisan)
-                    <option value="{{ $artisan->id }}" @selected(in_array($artisan->id, $selectedArtisans))>{{ $artisan->name }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div>
-            <label class="{{ $labelCls }}">Material Produksi (Ctrl+klik multi)</label>
-            <select name="material_ids[]" multiple class="{{ $inputCls }} h-32">
-                @foreach($materials as $material)
-                    <option value="{{ $material->id }}" @selected(in_array($material->id, $selectedMaterials))>{{ $material->name }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-</div>
 
 {{-- Images --}}
 <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">

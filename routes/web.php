@@ -1,20 +1,25 @@
 <?php
 
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\ArtisanController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\GalleryController;
-use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
-use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('dashboard');
+// ─── Landing / Frontend Catalog (Public) ───
+Route::prefix('katalog')->name('landing.')->group(function () {
+    Route::get('/',                         [LandingController::class, 'home'])           ->name('home');
+    Route::get('/produk',                   [LandingController::class, 'products'])       ->name('products.index');
+    Route::get('/produk/{product:slug}',    [LandingController::class, 'productDetail'])  ->name('products.show');
+    Route::get('/kategori',                 [LandingController::class, 'categories'])     ->name('categories.index');
+    Route::get('/kategori/{category:slug}', [LandingController::class, 'categoryDetail'])->name('categories.show');
+    Route::get('/tentang',                  [LandingController::class, 'about'])          ->name('about');
+    Route::get('/kontak',                   [LandingController::class, 'contact'])        ->name('contact');
 });
+
+Route::get('/', fn() => redirect()->route('landing.home'));
 
 Route::middleware('auth', 'verified')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -22,11 +27,6 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::resources([
         'products' => ProductController::class,
         'categories' => CategoryController::class,
-        'artisans' => ArtisanController::class,
-        'materials' => MaterialController::class,
-        'tags' => TagController::class,
-        'galleries' => GalleryController::class,
-        'articles' => ArticleController::class,
         'settings' => SettingController::class,
     ]);
 

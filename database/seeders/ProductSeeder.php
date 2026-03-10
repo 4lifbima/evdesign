@@ -2,10 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Artisan;
-use App\Models\Material;
 use App\Models\Product;
-use App\Models\Tag;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -17,17 +14,6 @@ class ProductSeeder extends Seeder
         }
 
         Product::factory()->count(15)->create()->each(function (Product $product): void {
-            $product->tags()->sync(Tag::inRandomOrder()->limit(2)->pluck('id')->all());
-            $product->artisans()->sync(
-                Artisan::inRandomOrder()->limit(2)->pluck('id')->mapWithKeys(
-                    fn ($id) => [$id => ['quantity_made' => rand(1, 20)]]
-                )->all()
-            );
-            $product->materialsRelation()->sync(
-                Material::inRandomOrder()->limit(2)->pluck('id')->mapWithKeys(
-                    fn ($id) => [$id => ['quantity_used' => rand(1, 3), 'unit' => 'pcs']]
-                )->all()
-            );
             $product->images()->create([
                 'image_path' => 'products/default.jpg',
                 'is_primary' => true,

@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use App\Models\Artisan;
 use App\Models\Category;
-use App\Models\Material;
 use App\Models\Product;
-use App\Models\Tag;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -16,7 +13,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['category', 'tags'])
+        $products = Product::with(['category'])
             ->when(request('q'), fn ($q, $term) => $q->where('name', 'like', "%{$term}%"))
             ->when(request('status'), fn ($q, $status) => $q->where('status', $status))
             ->latest()
@@ -30,9 +27,6 @@ class ProductController extends Controller
     {
         return view('products.create', [
             'categories' => Category::orderBy('name')->get(),
-            'tags' => Tag::orderBy('name')->get(),
-            'artisans' => Artisan::orderBy('name')->get(),
-            'materials' => Material::orderBy('name')->get(),
         ]);
     }
 
@@ -49,21 +43,18 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        $product->load(['category', 'tags', 'artisans', 'materialsRelation', 'images', 'variants']);
+        $product->load(['category', 'images', 'variants']);
 
         return view('products.show', compact('product'));
     }
 
     public function edit(Product $product)
     {
-        $product->load(['tags', 'artisans', 'materialsRelation', 'images', 'variants']);
+        $product->load(['images', 'variants']);
 
         return view('products.edit', [
             'product' => $product,
             'categories' => Category::orderBy('name')->get(),
-            'tags' => Tag::orderBy('name')->get(),
-            'artisans' => Artisan::orderBy('name')->get(),
-            'materials' => Material::orderBy('name')->get(),
         ]);
     }
 
@@ -116,13 +107,6 @@ class ProductController extends Controller
 
     private function syncRelations(Product $product, array $validated, bool $replace = false): void
     {
-        $tagIds = $validated['tag_ids'] ?? [];
-        $artisanIds = $validated['artisan_ids'] ?? [];
-        $materialIds = $validated['material_ids'] ?? [];
-
-        $product->tags()->sync($tagIds);
-        $product->artisans()->sync(collect($artisanIds)->mapWithKeys(fn ($id) => [$id => ['quantity_made' => null, 'production_date' => null, 'notes' => null]])->all());
-        $product->materialsRelation()->sync(collect($materialIds)->mapWithKeys(fn ($id) => [$id => ['quantity_used' => null, 'unit' => null, 'notes' => null]])->all());
 
         if ($replace) {
             $product->images()->delete();

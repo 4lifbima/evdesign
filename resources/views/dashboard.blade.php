@@ -5,7 +5,7 @@
 <div class="space-y-6">
 
     {{-- ── STAT CARDS ────────────────────────────────────────── --}}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
 
         {{-- Card: Total Produk --}}
         <div class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-5 border-l-4 border-[#fc1919] border border-[#E9ECEF] dark:border-[#334155] group hover:-translate-y-1 transition-transform duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
@@ -26,24 +26,6 @@
             </div>
         </div>
 
-        {{-- Card: Perajin Binaan --}}
-        <div class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-5 border-l-4 border-[#fc1919] border border-[#E9ECEF] dark:border-[#334155] group hover:-translate-y-1 transition-transform duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-            <div class="flex justify-between items-start">
-                <div>
-                    <p class="text-sm font-medium text-[#6C757D] mb-1">Perajin Binaan</p>
-                    <p class="font-mono text-3xl font-bold text-[#212529] dark:text-white">{{ $stats['artisans'] }}</p>
-                </div>
-                <div class="w-12 h-12 rounded-xl bg-[#fc1919]/10 flex items-center justify-center text-[#fc1919] group-hover:scale-110 transition-transform">
-                    <iconify-icon icon="solar:users-group-two-rounded-bold" class="text-2xl"></iconify-icon>
-                </div>
-            </div>
-            <div class="mt-4 flex items-center text-sm gap-1">
-                <span class="text-[#28A745] font-semibold flex items-center gap-0.5">
-                    <iconify-icon icon="solar:check-circle-bold"></iconify-icon> Aktif
-                </span>
-                <span class="text-[#6C757D]">berproduksi</span>
-            </div>
-        </div>
 
         {{-- Card: Kategori --}}
         <div class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-5 border-l-4 border-[#fc1919] border border-[#E9ECEF] dark:border-[#334155] group hover:-translate-y-1 transition-transform duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
@@ -64,24 +46,6 @@
             </div>
         </div>
 
-        {{-- Card: Stok Menipis --}}
-        <div class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-5 border-l-4 border-[#FFC107] border border-[#E9ECEF] dark:border-[#334155] group hover:-translate-y-1 transition-transform duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-            <div class="flex justify-between items-start">
-                <div>
-                    <p class="text-sm font-medium text-[#6C757D] mb-1">Peringatan Stok</p>
-                    <p class="font-mono text-3xl font-bold text-[#212529] dark:text-white">{{ $stats['low_stock_materials'] }}</p>
-                </div>
-                <div class="w-12 h-12 rounded-xl bg-[#FFC107]/20 flex items-center justify-center text-[#D39E00] dark:text-[#FFC107] group-hover:scale-110 transition-transform">
-                    <iconify-icon icon="solar:danger-triangle-bold" class="text-2xl"></iconify-icon>
-                </div>
-            </div>
-            <div class="mt-4 flex items-center text-sm gap-1">
-                <span class="text-[#D39E00] dark:text-[#FFC107] font-semibold flex items-center gap-0.5">
-                    <iconify-icon icon="solar:info-circle-bold"></iconify-icon> Menipis
-                </span>
-                <span class="text-[#6C757D]">butuh re-stock</span>
-            </div>
-        </div>
     </div>
 
     {{-- ── CHARTS ROW ───────────────────────────────────────── --}}

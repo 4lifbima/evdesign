@@ -9,35 +9,35 @@ class CategorySeeder extends Seeder
 {
     public function run(): void
     {
-        $parent = Category::updateOrCreate(
-            ['slug' => 'ready-to-wear'],
+        $categories = [
             [
-                'name' => 'Ready to Wear',
-                'description' => 'Koleksi pakaian siap pakai dengan sentuhan sulaman Karawo',
+                'name' => 'SIMLYCITY',
+                'description' => 'Koleksi pakaian dengan desain clean dan minimalis',
                 'icon' => 'solar:tshirt-linear',
-                'is_active' => true,
+            ],
+            [
+                'name' => 'MODESTY',
+                'description' => 'Koleksi pakaian sopan dan tertutup dengan sentuhan modern',
+                'icon' => 'solar:hanger-linear',
+            ],
+            [
+                'name' => 'SULAMAN',
+                'description' => 'Koleksi eksklusif dengan sulaman Karawo',
+                'icon' => 'solar:magic-stick-3-linear',
             ]
-        );
+        ];
 
-        foreach (['Kemeja', 'Celana Boim', 'Jacket', 'Outer', 'Jas', 'Gaun Malam'] as $name) {
+        foreach ($categories as $cat) {
             Category::updateOrCreate(
-                ['slug' => str($name)->slug()],
+                ['slug' => str($cat['name'])->slug()],
                 [
-                    'name' => $name,
-                    'parent_id' => $parent->id,
+                    'name' => $cat['name'],
+                    'description' => $cat['description'],
+                    'icon' => $cat['icon'],
+                    'parent_id' => null,
                     'is_active' => true,
                 ]
             );
         }
-
-        Category::updateOrCreate(
-            ['slug' => 'bahan-sulaman'],
-            [
-                'name' => 'Bahan Sulaman',
-                'description' => 'Bahan kain dengan sulaman Karawo siap pakai',
-                'icon' => 'solar:box-linear',
-                'is_active' => true,
-            ]
-        );
     }
 }

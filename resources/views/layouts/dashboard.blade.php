@@ -87,29 +87,10 @@
                         ['route' => 'dashboard',       'icon' => 'solar:home-2-bold',                    'label' => 'Dashboard'],
                         ['route' => 'products.index',  'icon' => 'solar:bag-bold',                       'label' => 'Manajemen Produk'],
                         ['route' => 'categories.index','icon' => 'solar:sort-bold',                      'label' => 'Kategori'],
-                        ['route' => 'artisans.index',  'icon' => 'solar:users-group-rounded-bold',       'label' => 'Data Perajin'],
-                    ];
-                    $menus2 = [
-                        ['route' => 'materials.index', 'icon' => 'solar:box-bold',                       'label' => 'Inventaris Bahan'],
-                        ['route' => 'galleries.index', 'icon' => 'solar:gallery-bold',                   'label' => 'Galeri Karya'],
-                        ['route' => 'articles.index',  'icon' => 'solar:notes-bold',                     'label' => 'Artikel & Berita'],
-                        ['route' => 'tags.index',      'icon' => 'solar:tag-bold',                       'label' => 'Manajemen Tag'],
                     ];
                 @endphp
 
                 @foreach ($menus as $menu)
-                    @php $isActive = request()->routeIs($menu['route']) || request()->routeIs(str_replace('.index', '.*', $menu['route'])); @endphp
-                    <a href="{{ route($menu['route']) }}"
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#495057] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors {{ $isActive ? 'nav-item-active' : '' }}">
-                        <iconify-icon icon="{{ $menu['icon'] }}" class="text-xl flex-shrink-0"></iconify-icon>
-                        <span>{{ $menu['label'] }}</span>
-                    </a>
-                @endforeach
-            </div>
-
-            <p class="text-[11px] uppercase tracking-widest text-[#6C757D] font-semibold mt-6 mb-3 px-3">Operasional</p>
-            <div class="space-y-0.5">
-                @foreach ($menus2 as $menu)
                     @php $isActive = request()->routeIs($menu['route']) || request()->routeIs(str_replace('.index', '.*', $menu['route'])); @endphp
                     <a href="{{ route($menu['route']) }}"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#495057] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors {{ $isActive ? 'nav-item-active' : '' }}">
