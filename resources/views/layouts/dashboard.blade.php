@@ -103,8 +103,8 @@
 
         <!-- Bottom: Settings + Logout -->
         <div class="p-4 border-t border-[#E9ECEF] dark:border-[#334155] space-y-0.5">
-            <a href="{{ route('settings.index') }}"
-               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#495057] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors {{ request()->routeIs('settings.*') ? 'nav-item-active' : '' }}">
+            <a href="{{ route('profile.edit') }}"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#495057] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors {{ request()->routeIs('profile.*') ? 'nav-item-active' : '' }}">
                 <iconify-icon icon="solar:settings-bold" class="text-xl"></iconify-icon>
                 <span>Pengaturan</span>
             </a>
